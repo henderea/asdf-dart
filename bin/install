@@ -11,8 +11,13 @@ install_me() {
   fi
   source_path=https://storage.googleapis.com/dart-archive/channels/$channel/release/$version/sdk/dartsdk-linux-x64-release.zip
   tmpd=$(mktemp -d); cd $tmpd; 
-  echo "curl -L $source_path -o ${version}.zip"
-  curl -L $source_path -o ${version}.zip
+  if which axel; then
+    echo "axel $source_path -o ${version}.zip"
+    axel $source_path -o ${version}.zip
+  else
+    echo "curl -L $source_path -o ${version}.zip"
+    curl -L $source_path -o ${version}.zip
+  fi
   echo "cd $install_path"
   cd $install_path
   echo "unzip ${version}.zip"
